@@ -4,10 +4,10 @@ PIP = pip3
 DOCKER_COMPOSE = docker-compose
 
 # Define targets
-.PHONY: all install build run test clean setup train-model install_mindsdb install_handler dev precommit check build_docker run_docker test_docker neuuro_train neuuro_run neuuro_test
+.PHONY: all install build run test clean setup train-model install_mindsdb install_handler dev precommit check build_docker run_docker test_docker neuuro_train neuuro_run neuuro_test submodules
 
 # Default target
-all: install build run
+all: submodules install build run
 
 # Install dependencies
 install:
@@ -39,11 +39,11 @@ check:
 	python tests/scripts/check_print_statements.py
 
 # Build Docker images
-build:
+build: submodules
 	$(DOCKER_COMPOSE) build
 
 # Run the services
-run:
+run: submodules
 	$(DOCKER_COMPOSE) up
 
 run_mindsdb:
@@ -93,3 +93,7 @@ setup:
 
 train-model:
 	python src/modules/NeutrosophicDataProcessing/data_filter_adapter.py
+
+# Initialize and update submodules
+submodules:
+	git submodule update --init --recursive
