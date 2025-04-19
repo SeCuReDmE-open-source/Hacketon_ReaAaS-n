@@ -1,0 +1,25 @@
+# Initialize detector
+detector = YOLOv5ObjectDetector(
+    model_dir="assets",
+    custom_dir="custom-models",
+    model_size="Medium"
+)
+
+# Detect objects in image
+results = detector.detect_objects(
+    image_data=image_bytes,
+    min_confidence=0.4
+)
+
+# Use custom model
+custom_results = detector.detect_objects(
+    image_data=image_bytes,
+    min_confidence=0.4,
+    custom_model="ipcam-general"
+)
+
+# List available custom models
+custom_models = detector.list_custom_models()
+
+# Get detection statistics
+stats = detector.get_status()

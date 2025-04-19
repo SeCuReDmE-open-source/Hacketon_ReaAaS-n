@@ -1,0 +1,7 @@
+
+FROM python:3.10-slim
+WORKDIR /app
+COPY requirements-live_test.txt ./
+RUN pip install --no-cache-dir -r requirements-live_test.txt
+COPY tests/live_test.py .
+CMD ["python", "live_test.py"]

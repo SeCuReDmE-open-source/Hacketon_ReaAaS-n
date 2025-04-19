@@ -1,0 +1,3 @@
+curl -X POST "http://localhost:47334/api/handlers/byom/neuucro_engine" \
+  -F "code=@model.py" \
+  -F "modules=@requirements.txt"

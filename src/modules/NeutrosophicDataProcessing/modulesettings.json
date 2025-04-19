@@ -1,0 +1,7 @@
+
+{
+    "runtime": "python3.10",
+    "virtualEnvLocation": "venv",
+    "dependencies": "requirements.txt",
+    "postInstall": "post_install.sh"
+}
