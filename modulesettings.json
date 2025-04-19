@@ -1,4 +1,3 @@
-
 {
   "Logging": {
     "LogLevel": {
@@ -79,5 +78,18 @@
     // "moduleid:version; moduleid:version, ...", with the version being optional. If the version is
     // not specified, the latest version will be installed.
     "InitialModules": "ObjectDetectionYOLOv5-6.2"
+  },
+
+  "MCPServer": {
+    "Enabled": true,
+    "Host": "localhost",
+    "Port": 5000,
+    "APIKey": "your-api-key",
+    "Subrepos": [
+      "servers",
+      "containerz-plugin",
+      "models-prefab",
+      "tensorzero"
+    ]
   }
 }

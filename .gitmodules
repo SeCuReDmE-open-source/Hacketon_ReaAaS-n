@@ -1,0 +1,12 @@
+[submodule "servers"]
+	path = servers
+	url = https://github.com/Celebrum/servers.git
+[submodule "containerz-plugin"]
+	path = containerz-plugin
+	url = https://github.com/Celebrum/containerz-plugin.git
+[submodule "models-prefab"]
+	path = models-prefab
+	url = https://github.com/Celebrum/models-prefab.git
+[submodule "tensorzero"]
+	path = tensorzero
+	url = https://github.com/Celebrum/tensorzero.git
