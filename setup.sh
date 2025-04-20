@@ -1,4 +1,3 @@
-
 #!/bin/bash
 
 # Detect the mode based on the current directory
@@ -23,5 +22,9 @@ for module in src/modules/*; do
         cd -
     fi
 done
+
+# Setup commands for the subrepo server
+echo "Setting up subrepo server..."
+docker-compose up -d servers
 
 echo "Setup completed."
