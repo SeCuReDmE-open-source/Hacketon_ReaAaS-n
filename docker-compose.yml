@@ -159,6 +159,36 @@ services:
     networks:
       - ffed_network
 
+  airbyte-server:
+    image: airbyte/server:latest
+    ports:
+      - "8000:8000"
+    environment:
+      - AIRBYTE_ROLE=server
+    networks:
+      - ffed_network
+
+  airbyte-db:
+    image: postgres:13-alpine
+    environment:
+      POSTGRES_USER: airbyte
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: airbyte
+    volumes:
+      - airbyte_db_data:/var/lib/postgresql/data
+    networks:
+      - ffed_network
+
+  airbyte-webapp:
+    image: airbyte/webapp:latest
+    ports:
+      - "8001:8001"
+    environment:
+      - AIRBYTE_ROLE=webapp
+      - AIRBYTE_API_URL=http://airbyte-server:8000/api/v1
+    networks:
+      - ffed_network
+
 networks:
   ffed_network:
     driver: bridge
@@ -170,3 +200,4 @@ volumes:
   containerz_plugin_data:
   models_prefab_data:
   tensorzero_data:
+  airbyte_db_data:
