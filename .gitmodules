@@ -10,3 +10,6 @@
 [submodule "tensorzero"]
 	path = tensorzero
 	url = https://github.com/Celebrum/tensorzero.git
+[submodule "neutrosophic-quantum-ffed-enhancement"]
+	path = neutrosophic-quantum-ffed-enhancement
+	url = <URL-of-the-current-repo>
