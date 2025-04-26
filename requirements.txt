@@ -16,3 +16,4 @@ datagrip
 statsforecast
 neuralforecast
 tsfresh
+pyjwt

@@ -3,6 +3,8 @@ import logging
 import subprocess
 import os
 import json
+import jwt
+import datetime
 
 # Set up logging
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
@@ -16,6 +18,14 @@ config = {
     'mindsdb_user': os.getenv('MINDSDB_USER'),
     'mindsdb_password': os.getenv('MINDSDB_PASSWORD')
 }
+
+def generate_jwt_token(secret, payload):
+    try:
+        token = jwt.encode(payload, secret, algorithm='HS256')
+        return token
+    except Exception as e:
+        logging.error(f"Error generating JWT token: {e}")
+        raise
 
 def trigger_devops_pipeline():
     try:

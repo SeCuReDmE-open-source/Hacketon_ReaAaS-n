@@ -33,6 +33,9 @@ services:
       MINDSDB_CONFIG_PATH: /app/modulesettings.json  # Update to point to the mounted configuration file
       MINDSDB_DOCKER_ENV: "true"
       PYTHONUNBUFFERED: 1
+      MINDSDB_HOST: ${MINDSDB_HOST}
+      MINDSDB_USER: ${MINDSDB_USER}
+      MINDSDB_PASSWORD: ${MINDSDB_PASSWORD}
     networks:
       - ffed_network
     entrypoint: ["./setup.sh"]
@@ -40,10 +43,10 @@ services:
   database:
     image: postgres:latest
     environment:
-      environment:
-        POSTGRES_USER: ${POSTGRES_USER}
-        POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
-        POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
+    ports:
       - "5432:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data

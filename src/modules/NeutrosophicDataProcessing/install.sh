@@ -1,4 +1,3 @@
-
 #!/bin/bash
 
 # Detect the current environment
@@ -24,6 +23,10 @@ echo "Running module install scripts..."
 # Install requirements
 echo "Installing Python packages..."
 pip install -r requirements.txt
+
+# Install pyjwt library for generating JWT tokens
+echo "Installing pyjwt library..."
+pip install pyjwt
 
 # Run post-install scripts
 echo "Running post-install scripts..."
