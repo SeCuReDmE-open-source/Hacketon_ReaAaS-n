@@ -4,7 +4,7 @@ PIP = pip3
 DOCKER_COMPOSE = docker-compose
 
 # Define targets
-.PHONY: all install build run test clean setup train-model install_mindsdb install_handler dev precommit check build_docker run_docker test_docker neuuro_train neuuro_run neuuro_test submodules run_servers
+.PHONY: all install build run test clean setup train-model install_mindsdb install_handler dev precommit check build_docker run_docker test_docker neuuro_train neuuro_run neuuro_test submodules run_servers install_neutrosophic build_neutrosophic run_neutrosophic
 
 # Default target
 all: submodules install build run
@@ -26,6 +26,9 @@ install_handler:
 		echo 'Please set $$HANDLER_NAME to the handler to install.';\
 	fi	
 
+install_neutrosophic:
+	$(PIP) install -r neutrosophic-quantum-ffed-enhancement/requirements.txt
+
 # Development targets
 dev: install precommit
 
@@ -42,12 +45,18 @@ check:
 build: submodules
 	$(DOCKER_COMPOSE) build
 
+build_neutrosophic:
+	docker build -t neutrosophic-quantum-ffed-enhancement -f neutrosophic-quantum-ffed-enhancement/Dockerfile neutrosophic-quantum-ffed-enhancement
+
 # Run the services
 run: submodules
 	$(DOCKER_COMPOSE) up
 
 run_mindsdb:
 	python -m mindsdb
+
+run_neutrosophic:
+	docker run -d --name neutrosophic-quantum-ffed-enhancement -p 8084:8084 neutrosophic-quantum-ffed-enhancement
 
 # Run tests
 test:

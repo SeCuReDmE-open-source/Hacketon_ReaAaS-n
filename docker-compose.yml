@@ -145,6 +145,20 @@ services:
     networks:
       - ffed_network
 
+  neutrosophic-quantum-ffed-enhancement:
+    build:
+      context: ./neutrosophic-quantum-ffed-enhancement
+      dockerfile: ./neutrosophic-quantum-ffed-enhancement/Dockerfile
+    ports:
+      - "8084:8084"
+    volumes:
+      - ./neutrosophic-quantum-ffed-enhancement:/app/neutrosophic-quantum-ffed-enhancement
+    environment:
+      - PYTHONPATH=/app
+      - NEUTROSOPHIC_CONFIG=/app/config/neutrosophic.json
+    networks:
+      - ffed_network
+
 networks:
   ffed_network:
     driver: bridge

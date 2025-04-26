@@ -118,3 +118,36 @@ The repository includes a CI configuration file `.github/workflows/ci.yml` for a
 ### Documentation
 
 Detailed documentation for individual modules and their functions can be found in the `docs/modules.md` file. The documentation includes examples and usage instructions for each module.
+
+### Neutrosophic Quantum FfeD Enhancement Setup Instructions
+
+To set up the Neutrosophic Quantum FfeD Enhancement module, follow these steps:
+
+1. Clone the repository:
+```bash
+git clone <repository-url>
+cd FfeD_project
+```
+
+2. Add the current repository as a submodule:
+```bash
+git submodule add <URL-of-the-current-repo> neutrosophic-quantum-ffed-enhancement
+git submodule update --init --recursive
+```
+
+3. Install dependencies for the Neutrosophic Quantum FfeD Enhancement module:
+```bash
+make install_neutrosophic
+```
+
+4. Build the Docker image for the Neutrosophic Quantum FfeD Enhancement module:
+```bash
+make build_neutrosophic
+```
+
+5. Run the Docker container for the Neutrosophic Quantum FfeD Enhancement module:
+```bash
+make run_neutrosophic
+```
+
+6. Access the Neutrosophic Quantum FfeD Enhancement service at [http://localhost:8084](http://localhost:8084)
