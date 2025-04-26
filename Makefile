@@ -4,7 +4,7 @@ PIP = pip3
 DOCKER_COMPOSE = docker-compose
 
 # Define targets
-.PHONY: all install build run test clean setup train-model install_mindsdb install_handler dev precommit check build_docker run_docker test_docker neuuro_train neuuro_run neuuro_test submodules run_servers install_neutrosophic build_neutrosophic run_neutrosophic
+.PHONY: all install build run test clean setup train-model install_mindsdb install_handler dev precommit check build_docker run_docker test_docker neuuro_train neuuro_run neuuro_test submodules run_servers install_neutrosophic build_neutrosophic run_neutrosophic setup_airbyte run_airbyte
 
 # Default target
 all: submodules install build run
@@ -110,3 +110,10 @@ submodules:
 # Run the subrepo server
 run_servers:
 	$(DOCKER_COMPOSE) up servers
+
+# Airbyte specific targets
+setup_airbyte:
+	python src/modules/NeutrosophicDataProcessing/airbyte_pipeline.py
+
+run_airbyte:
+	docker-compose up airbyte-server airbyte-webapp airbyte-db

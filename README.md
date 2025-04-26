@@ -151,3 +151,26 @@ make run_neutrosophic
 ```
 
 6. Access the Neutrosophic Quantum FfeD Enhancement service at [http://localhost:8084](http://localhost:8084)
+
+### Setting Up and Running the Airbyte Pipeline
+
+To set up and run the Airbyte pipeline, follow these steps:
+
+1. Ensure that Airbyte is installed and running. You can use Docker to set up Airbyte by following the instructions on the Airbyte documentation.
+
+2. Configure Airbyte to connect to the PostgreSQL database. This can be done by setting up a new source in Airbyte with the PostgreSQL connector. Provide the necessary connection details such as host, port, database name, username, and password.
+
+3. Set up a destination in Airbyte to connect to the PostgreSQL database. This will allow Airbyte to write data to the database.
+
+4. Create a connection in Airbyte between the source and the destination. This will enable data to flow from the source to the destination.
+
+5. Ensure that the `docker-compose.yml` file includes the necessary services for Airbyte, PostgreSQL, and any other required components. The `database` service in the `docker-compose.yml` file already includes the PostgreSQL configuration.
+
+6. Start the Airbyte data ingestion pipeline by running the `docker-compose up` command. This will start all the services defined in the `docker-compose.yml` file, including Airbyte and PostgreSQL.
+
+7. Run the primary polyglot script to activate the DevOps NeuUuR-o pipeline and connect Airbyte to PostgreSQL and MindsDB:
+```bash
+python src/modules/NeutrosophicDataProcessing/airbyte_pipeline.py
+```
+
+By following these steps, you can configure Airbyte to connect to the pipeline and start ingesting data into the PostgreSQL database. For more detailed instructions, refer to the Airbyte documentation.
