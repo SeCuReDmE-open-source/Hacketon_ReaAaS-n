@@ -16,7 +16,8 @@ config = {
     'postgres_connection_string': os.getenv('POSTGRES_CONNECTION_STRING'),
     'mindsdb_host': os.getenv('MINDSDB_HOST'),
     'mindsdb_user': os.getenv('MINDSDB_USER'),
-    'mindsdb_password': os.getenv('MINDSDB_PASSWORD')
+    'mindsdb_password': os.getenv('MINDSDB_PASSWORD'),
+    'jwt_secret': os.getenv('JWT_SECRET')
 }
 
 def generate_jwt_token(secret, payload):
