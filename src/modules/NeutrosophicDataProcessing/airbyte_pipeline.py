@@ -26,6 +26,7 @@ config = {
     'output_path': 'data/output.csv',
     'mindsdb_project': 'neutrosophic_data_processing',
     'mindsdb_model': 'data_filter_model'
+
 }
 
 def generate_jwt_token(secret, payload):

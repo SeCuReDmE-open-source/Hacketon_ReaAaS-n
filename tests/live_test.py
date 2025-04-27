@@ -1,4 +1,3 @@
-
 import requests
 import time
 
@@ -42,6 +41,14 @@ def test_neuuro_actuator():
     except Exception as e:
         print(f"NeuUuR-o Actuator health check failed: {e}")
 
+def test_airbyte_server():
+    try:
+        response = requests.get('http://airbyte-server:8000/health')
+        assert response.status_code == 200
+        print("Airbyte Server is healthy.")
+    except Exception as e:
+        print(f"Airbyte Server health check failed: {e}")
+
 def main():
     # Wait for services to be up
     time.sleep(20)
@@ -50,6 +57,7 @@ def main():
     test_database()
     test_redis()
     test_neuuro_actuator()
+    test_airbyte_server()
     print("Live testing completed.")
 
 if __name__ == "__main__":
