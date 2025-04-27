@@ -1,0 +1,1 @@
+call "%sdkScriptsPath%\\utils.bat" GetFromServer "rembg-models.zip" "models" "Downloading Background Remover models..."

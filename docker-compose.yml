@@ -1,0 +1,206 @@
+version: '3.8'
+
+services:
+  ffed_server:
+    build: .
+    ports:
+      - "32168:32168"
+      - "32168:32168/udp"
+    volumes:
+      - ./src:/app/src
+      - ./models:/app/models
+    environment:
+      - PYTHONPATH=/app
+      - U2NET_HOME=/app/models
+    networks:
+      - ffed_network
+    entrypoint: ["./setup.sh"]
+
+  mindsdb:
+    build:
+      context: .
+      dockerfile: ./src/modules/NeutrosophicDataProcessing/neutrosophic.Dockerfile
+      target: prod
+    ports:
+      - "47334:47334"
+      - "47335:47335"
+      - "47336:47336"
+    volumes:
+      - mindsdb_data:/root/mindsdb_storage
+      - ./src:/app/src
+      - ./modulesettings.json:/app/modulesettings.json  # Mount the modulesettings.json file
+    environment:
+      MINDSDB_CONFIG_PATH: /app/modulesettings.json  # Update to point to the mounted configuration file
+      MINDSDB_DOCKER_ENV: "true"
+      PYTHONUNBUFFERED: 1
+      MINDSDB_HOST: ${MINDSDB_HOST}
+      MINDSDB_USER: ${MINDSDB_USER}
+      MINDSDB_PASSWORD: ${MINDSDB_PASSWORD}
+    networks:
+      - ffed_network
+    entrypoint: ["./setup.sh"]
+
+  database:
+    image: postgres:latest
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - ffed_network
+
+  redis:
+    image: redis:latest
+    ports:
+      - "6379:6379"
+    networks:
+      - ffed_network
+
+  test:
+    build:
+      context: .
+      dockerfile: ./src/modules/NeutrosophicDataProcessing/neutrosophic.Dockerfile
+      target: test
+    volumes:
+      - ./src:/app/src
+      - ./tests:/app/tests
+    networks:
+      - ffed_network
+
+  neuuro_actuator:
+    build:
+      context: .
+      dockerfile: ./src/modules/NeutrosophicDataProcessing/neutrosophic.Dockerfile
+      target: neuuro
+    ports:
+      - "32168:32168"
+    volumes:
+      - ./src:/app/src
+      - ./models:/app/models
+    environment:
+      - PYTHONPATH=/app
+      - NEUURO_CONFIG=/app/config/neuuro.json
+      - CUDA_VISIBLE_DEVICES=0  # Enable GPU support
+      - NN_BATCH_SIZE=64
+      - NN_EPOCHS=100
+    networks:
+      - ffed_network
+    depends_on:
+      - mindsdb
+      - database
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities: [gpu]
+
+  live_test:
+    build:
+      context: .
+      dockerfile: ./Dockerfile.live_test  # Dockerfile for live testing
+    volumes:
+      - ./tests/live_test.py:/app/live_test.py
+    depends_on:
+      - ffed_server
+      - mindsdb
+      - database
+      - redis
+      - neuuro_actuator
+    command: ["python", "live_test.py"]
+    networks:
+      - ffed_network
+
+  servers:
+    build:
+      context: ./servers
+    ports:
+      - "8080:8080"
+    networks:
+      - ffed_network
+
+  containerz-plugin:
+    build:
+      context: ./containerz-plugin
+    ports:
+      - "8081:8081"
+    networks:
+      - ffed_network
+
+  models-prefab:
+    build:
+      context: ./models-prefab
+    ports:
+      - "8082:8082"
+    networks:
+      - ffed_network
+
+  tensorzero:
+    build:
+      context: ./tensorzero
+    ports:
+      - "8083:8083"
+    networks:
+      - ffed_network
+
+  neutrosophic-quantum-ffed-enhancement:
+    build:
+      context: ./neutrosophic-quantum-ffed-enhancement
+      dockerfile: ./neutrosophic-quantum-ffed-enhancement/Dockerfile
+    ports:
+      - "8084:8084"
+    volumes:
+      - ./neutrosophic-quantum-ffed-enhancement:/app/neutrosophic-quantum-ffed-enhancement
+    environment:
+      - PYTHONPATH=/app
+      - NEUTROSOPHIC_CONFIG=/app/config/neutrosophic.json
+    networks:
+      - ffed_network
+
+  airbyte-server:
+    image: airbyte/server:latest
+    ports:
+      - "8000:8000"
+    environment:
+      - AIRBYTE_ROLE=server
+    networks:
+      - ffed_network
+
+  airbyte-db:
+    image: postgres:13-alpine
+    environment:
+      POSTGRES_USER: airbyte
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: airbyte
+    volumes:
+      - airbyte_db_data:/var/lib/postgresql/data
+    networks:
+      - ffed_network
+
+  airbyte-webapp:
+    image: airbyte/webapp:latest
+    ports:
+      - "8001:8001"
+    environment:
+      - AIRBYTE_ROLE=webapp
+      - AIRBYTE_API_URL=http://airbyte-server:8000/api/v1
+    networks:
+      - ffed_network
+
+networks:
+  ffed_network:
+    driver: bridge
+
+volumes:
+  mindsdb_data:
+  postgres_data:
+  servers_data:
+  containerz_plugin_data:
+  models_prefab_data:
+  tensorzero_data:
+  airbyte_db_data:

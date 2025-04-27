@@ -1,0 +1,82 @@
+# Starter pipeline for ReaAaS-n (Airbyte + PostgreSQL + MindsDB)
+# Start with this minimal configuration
+
+trigger:
+- main
+
+pool:
+  vmImage: ubuntu-latest
+
+variables:
+  # Python version
+  pythonVersion: '3.9'
+  
+  # Add these as secret variables in your Azure DevOps pipeline settings
+  # AIRBYTE_API_URL: 'http://your-airbyte-instance:8000/api/v1'
+  # AIRBYTE_CONNECTION_ID: 'your-connection-id'
+  # POSTGRES_CONNECTION_STRING: 'postgresql://username:password@hostname:port/database'
+  # MINDSDB_HOST: 'your-mindsdb-host'
+  # MINDSDB_USER: 'your-mindsdb-user'
+  # MINDSDB_PASSWORD: 'your-mindsdb-password'
+
+stages:
+- stage: Build
+  jobs:
+  - job: BuildAndTest
+    steps:
+    - task: UsePythonVersion@0
+      inputs:
+        versionSpec: '$(pythonVersion)'
+        addToPath: true
+      displayName: 'Use Python $(pythonVersion)'
+    
+    - script: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+      displayName: 'Install dependencies'
+    
+    - script: |
+        python -m pytest tests/ --junitxml=junit/test-results.xml
+      displayName: 'Run tests'
+      
+    - task: PublishTestResults@2
+      inputs:
+        testResultsFormat: 'JUnit'
+        testResultsFiles: '**/test-results.xml'
+        mergeTestResults: true
+        testRunTitle: 'Python tests'
+      condition: succeededOrFailed()
+      displayName: 'Publish test results'
+
+- stage: Deploy
+  dependsOn: Build
+  condition: succeeded()
+  jobs:
+  - job: RunDataPipeline
+    steps:
+    - task: UsePythonVersion@0
+      inputs:
+        versionSpec: '$(pythonVersion)'
+        addToPath: true
+      displayName: 'Use Python $(pythonVersion)'
+    
+    - script: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+      displayName: 'Install dependencies'
+    
+    - script: |
+        python scripts/trigger_airbyte_sync.py
+      displayName: 'Trigger Airbyte Sync'
+      env:
+        AIRBYTE_API_URL: $(AIRBYTE_API_URL)
+        AIRBYTE_CONNECTION_ID: $(AIRBYTE_CONNECTION_ID)
+    
+    - script: |
+        python scripts/run_mindsdb_predictions.py
+      displayName: 'Run MindsDB Predictions'
+      env:
+        POSTGRES_CONNECTION_STRING: $(POSTGRES_CONNECTION_STRING)
+        MINDSDB_HOST: $(MINDSDB_HOST)
+        MINDSDB_USER: $(MINDSDB_USER)
+        MINDSDB_PASSWORD: $(MINDSDB_PASSWORD)
