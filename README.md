@@ -1,9 +1,9 @@
 
-# Hacketon: AI Algorithm Builder
+# ReaAaS-n : AI Algorithm Builder
 
 ## Overview
 
-Welcome to Hacketon, a powerful platform designed to **transform natural language descriptions into functional algorithms**. Our innovative approach allows users to articulate their algorithmic needs in plain language, and Hacketon provides the underlying structure and tools to bring those ideas to life. This project provides a **complete development environment** leveraging containerization for consistency and ease of use.
+Welcome to ReaAaSn, a powerful platform designed to **transform natural language descriptions into functional algorithms**. Our innovative approach allows users to articulate their algorithmic needs in plain language, and Hacketon provides the underlying structure and tools to bring those ideas to life. This project provides a **complete development environment** leveraging containerization for consistency and ease of use.
 
 ## Getting Started
 
