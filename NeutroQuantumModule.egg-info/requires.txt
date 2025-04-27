@@ -1,0 +1,14 @@
+mindsdb
+torch
+torchquantum
+qiskit
+transformers
+pycaret
+ray[tune]
+pillow
+numpy
+onnxruntime
+securidme-engine
+clai-helper
+bigdata
+datagrip

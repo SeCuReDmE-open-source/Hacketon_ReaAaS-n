@@ -1,1 +1,7 @@
-{"image":"mcr.microsoft.com/devcontainers/universal:2"}
+{
+  "image": "mcr.microsoft.com/devcontainers/universal:2",
+  "tasks": {
+    "build": "make install",
+    "test": "import requests import json import os  def test_airbyte_connection():     airbyte_url = os.environ.get(\"AIRBYTE_API_URL\", \"http://localhost:8000/api/v1\")     connection_id = os.environ.get(\"AIRBYTE_CONNECTION_ID\")          headers = {         \"Content-Type\": \"application/json\",         \"Accept\": \"application/json\"     }          # Check connection status     response = requests.post(         f\"{airbyte_url}/connections/get\",         headers=headers,         json={\"connectionId\": connection_id}     )          print(f\"Connection status: {response.status_code}\")     print(json.dumps(response.json(), indent=2))          # Trigger a sync     sync_response = requests.post(         f\"{airbyte_url}/connections/sync\",         headers=headers,         json={\"connectionId\": connection_id}     )          print(f\"Sync trigger status: {sync_response.status_code}\")     print(json.dumps(sync_response.json(), indent=2))  if __name__ == \"__main__\":     test_airbyte_connection()"
+  }
+}
