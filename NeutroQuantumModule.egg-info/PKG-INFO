@@ -1,0 +1,32 @@
+Metadata-Version: 2.4
+Name: NeutroQuantumModule
+Version: 0.1.0
+Summary: A module for Neutrosophic Quantum Data Processing
+Home-page: https://github.com/Celebrum/NeutroQuantumModule
+Author: Your Name
+Author-email: your.email@example.com
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.6
+Requires-Dist: mindsdb
+Requires-Dist: torch
+Requires-Dist: torchquantum
+Requires-Dist: qiskit
+Requires-Dist: transformers
+Requires-Dist: pycaret
+Requires-Dist: ray[tune]
+Requires-Dist: pillow
+Requires-Dist: numpy
+Requires-Dist: onnxruntime
+Requires-Dist: securidme-engine
+Requires-Dist: clai-helper
+Requires-Dist: bigdata
+Requires-Dist: datagrip
+Dynamic: author
+Dynamic: author-email
+Dynamic: classifier
+Dynamic: home-page
+Dynamic: requires-dist
+Dynamic: requires-python
+Dynamic: summary
