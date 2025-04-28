@@ -1,169 +1,88 @@
-# ReaAaS-n : AI Algorithm Builder
+# ReaAaS-n (Hackathon Project)
 
 ## Overview
 
-Welcome to ReaAaSn, a powerful platform designed to **transform natural language descriptions into functional algorithms**. Our innovative approach allows users to articulate their algorithmic needs in plain language, and Hacketon provides the underlying structure and tools to bring those ideas to life. This project provides a **complete development environment** leveraging containerization for consistency and ease of use.
+ReaAaS-n is a multifaceted project developed for a hackathon. It appears to integrate several advanced concepts, including:
 
-## Getting Started
+* **AI Toolkit:** Functionality for fine-tuning and running inference on AI models (specifically mentioning Phi-3) using techniques like QLoRA. It provides interfaces for interaction via console and web (Gradio).
+* **Data Processing Pipeline:** Utilizes tools like Airbyte for data synchronization, PostgreSQL for database storage, and MindsDB for in-database machine learning and time series forecasting[cite: 1, 3, 5].
+* **FfeD Framework & Neutrosophic/Quantum Enhancements:** Incorporates custom logic potentially involving the FfeD framework, Neutrosophic data processing (handling uncertainty/missing data), and Quantum concepts.
+* **Dockerized Environment:** Leverages Docker and Docker Compose for managing various services like the core server, MindsDB, PostgreSQL, Redis, and potentially Airbyte[cite: 3].
 
-### Prerequisites
+## Technologies Used
 
-Ensure you have the following installed on your system:
+* **Backend:** Python [cite: 1, 4, 5]
+* **AI/ML:** MindsDB, PyTorch, Transformers, Qiskit, ONNXRuntime, bitsandbytes, peft, accelerate, olive-ai
+* **Data:** Airbyte, PostgreSQL, Redis, Pandas, Numpy, tsfresh [cite: 1, 3]
+* **Containerization:** Docker, Docker Compose [cite: 3]
+* **Environment:** Conda
+* **Frontend/Interface:** Gradio, FastAPI
+* **CI/CD:** Azure Pipelines [cite: 1]
+* **Other:** Vercel Analytics
 
-*   Git
-*   Docker
-*   Docker Compose
+## Setup
 
-### Installation
+*(Note: Setup might vary depending on the component you are focusing on. These are general steps based on the AI Toolkit part)*
 
-1.  **Clone the repository:**
+1.  **Clone the Repository:**
     ```bash
-    git clone <repository-url>
-    cd FfeD_project
+    git clone [https://github.com/SeCuReDmE-open-source/Hacketon_ReaAaS-n.git](https://github.com/SeCuReDmE-open-source/Hacketon_ReaAaS-n.git)
+    cd Hacketon_ReaAaS-n
     ```
-2.  **Install dependencies:**
-    *   For Linux/macOS:
+2.  **Set up Conda Environment:** (Referencing the AI Toolkit setup)
+    * Ensure Conda is installed.
+    * Run the setup script (adjust path if needed):
         ```bash
-        ./install.sh
+        ./ReaAaS-n/setup/first_time_setup.sh
         ```
-    *   For Windows:
+    * Activate the environment (check `conda-environment.yml` for the exact name, e.g., `phi-3-env`):
         ```bash
-        install.bat
+        conda activate <conda_env_name>
         ```
-    This step will handle the necessary software requirements for the project [1].
-
-3.  **Start the services:**
+3.  **Install Dependencies:** The Conda environment setup should handle this based on `requirements.txt` files. If not, install manually:
     ```bash
-    docker-compose up
+    pip install -r requirements.txt
+    # Potentially install requirements from ReaAaS-n/setup/requirements.txt as well
+    pip install -r ReaAaS-n/setup/requirements.txt
     ```
-    This command will start all the necessary components defined in the `docker-compose.yml` file, creating an isolated environment for Hacketon to run [2].
-
-## Building the Project
-
-The project utilizes a **Makefile** to streamline common development tasks [3].
-
-*   **Install Dependencies:**
+4.  **Docker Services (Optional):** If using the Dockerized components (like FfeD server, MindsDB, DB):
     ```bash
-    make install
+    docker-compose build # Optional, if images need building [cite: 3]
+    docker-compose up -d # Start services in detached mode [cite: 3]
     ```
-    This command installs the project's dependencies, including Python libraries [3, 4].
-*   **Build Docker Images:**
-    ```bash
-    make build
-    ```
-    This command builds the necessary Docker images for the project's services [3, 4].
-*   **Run Services:**
-    ```bash
-    make run
-    ```
-    This command starts all the project's services, likely using the Docker containers built in the previous step [3-5].
-*   **Run Tests:**
-    ```bash
-    make test
-    ```
-    This command executes the project's tests to ensure functionality [3, 4].
-*   **Clean Up:**
-    ```bash
-    make clean
-    ```
-    This command removes build artifacts, allowing for a fresh build [3, 4].
 
-## Using Hacketon
+## Basic Usage (AI Toolkit - Fine-tuning & Inference)
 
-Hacketon is designed with a **modular architecture**, allowing for the creation and integration of various algorithm-building components [6]. Detailed documentation for individual modules, including examples and usage instructions, can be found in the **`docs/modules.md`** file [6].
+*(Ensure the Conda environment is activated)*
 
-### Example Interaction
+1.  **Fine-tuning:**
+    * Navigate to the project root if needed.
+    * Run the Olive fine-tuning script:
+        ```bash
+        python ReaAaS-n/finetuning/invoke_olive.py
+        ```
+    * Checkpoints and the final adapter model should be saved in the `models` directory.
 
-While the specifics of each algorithm-building module are detailed in the documentation, here's a general example of how you might interact with a module:
+2.  **Inference (After Fine-tuning):**
+    * Navigate to the inference directory:
+        ```bash
+        cd ReaAaS-n/inference
+        ```
+    * **Console Chat:**
+        ```bash
+        python console_chat.py
+        ```
+    * **Web UI Chat (Gradio):**
+        ```bash
+        python gradio_chat.py
+        ```
+        Then open the provided URL (e.g., `http://127.0.0.1:7860`) in your browser.
 
-1.  Prepare your input data as required by the specific module (e.g., in a `.csv` file as `data/input.csv`) [4].
-2.  Run the relevant script for the module using a command like:
-    ```bash
-    python src/modules/<ModuleName>/<script_name>.py
-    ```
-    For example:
-    ```bash
-    python src/modules/YourAlgorithmModule/process_data.py
-    ```
-3.  The module will process your input and save the output to a designated location (e.g., `data/output.csv`) [4].
+## Project Components
 
-Modules within Hacketon incorporate **error handling and logging mechanisms** to ensure smooth operation and aid in debugging [4]. If any issues arise during execution, they will be logged for analysis [4].
+The repository contains several components:
 
-## Building for Production
-
-When preparing Hacketon for a production environment:
-
-1.  **Update the version** in the `modulesettings.json` file [7].
-2.  **Package the module** by running the script `./SDK/Scripts/create_packages.sh` [7].
-
-## Testing
-
-Hacketon incorporates various testing approaches to ensure the reliability of its components [4, 6].
-
-*   Automated tests can be run using the `make test` command [3, 4].
-*   The repository includes a **Continuous Integration (CI)** configuration (`.github/workflows/ci.yml`) for automated testing and deployment whenever changes are made to the repository [6].
-
-## Resources
-
-*   **Readme:** Provides an overview of the project [5].
-*   **Activity:** Shows the recent history of contributions to the repository [5].
-*   **Custom properties:** May contain additional project-specific information [5].
-*   **Stars:** 0 [5]
-*   **Watchers:** 1 [5]
-*   **Forks:** 0 [5]
-*   **Report repository:** A mechanism for users to report issues [5].
-*   **Releases:** No releases published [5].
-*   **Packages:** 0 [8].
-*   **Languages:** Python (84.0%), Shell (7.0%), JavaScript (3.3%), Makefile (3.2%), Dockerfile (2.5%) [8].
-*   Detailed module documentation: `docs/modules.md` [6].
-
-## License
-
-[Your License Here] [7]
-
-## Contributing
-
-We welcome contributions to the Hacketon project. Please refer to our contributing guidelines for more information.
-
-## Support
-
-
-### Modular Architecture for Polyglot Needs
-
-The repository now includes a modular architecture that allows for easy integration and extension of different components for each of the five polyglot needs. The polyglot needs include:
-
-1. **Programming languages**: The project uses multiple programming languages, including Python and JavaScript.
-2. **Data formats**: The project handles various data formats, such as CSV, JSON, and XML.
-3. **Integration with external services**: The project integrates with several external services, such as MindsDB, Airbyte, and DevOps pipelines.
-4. **Libraries and tools**: The project uses various libraries and tools for data processing, machine learning, and mathematical operations.
-5. **Modular architecture**: The project is designed with a modular architecture, allowing for easy integration and extension of different components.
-
-### Data Processing Logic for Polyglot Needs
-
-The repository now includes data processing logic for each polyglot need, involving reading data from different sources, applying transformations, and writing the processed data to the desired output format. The data processing logic is implemented in various modules and scripts, such as:
-
-- `neutrosophic quantum FfeD enhancement/core.py`
-- `neutrosophic quantum FfeD enhancement/grid_optimizer.py`
-- `src/modules/NeutrosophicDataProcessing/airbyte_pipeline.py`
-- `neutrosophic quantum FfeD enhancement/mindsdb_integration.py`
-- `src/modules/NeutrosophicDataProcessing/data_filter_adapter.py`
-
-### Integration with External Services
-
-The repository now ensures that the logic can interact with external services, such as databases, APIs, and machine learning models, using appropriate libraries and tools for each polyglot need. The integration with external services is demonstrated in various modules and scripts, such as:
-
-- `neutrosophic quantum FfeD enhancement/core.py`
-- `neutrosophic quantum FfeD enhancement/grid_optimizer.py`
-- `src/modules/NeutrosophicDataProcessing/airbyte_pipeline.py`
-- `neutrosophic quantum FfeD enhancement/mindsdb_integration.py`
-- `src/modules/NeutrosophicDataProcessing/data_filter_adapter.py`
-
-### Testing Procedures
-
-The repository now includes thorough testing of the implemented logic to ensure it meets the requirements and works correctly. The testing procedures include unit tests, integration tests, and manual testing. The testing procedures are updated to include new unit tests for the implemented logic.
-
-To run the tests, use the following command:
-```bash
-make test
-```
-
+* **`Hacketon_ReaAaS-n/` (Root):** Contains core setup (`docker-compose.yml`, `requirements.txt`), potentially the FfeD server logic, MindsDB integration (`model.py`, `modulesettings.json`), Airbyte pipeline scripts (`airbyte_pipeline.py`), tests, and documentation[cite: 1, 3, 5].
+* **`Hacketon_ReaAaS-n/ReaAaS-n/`:** Seems to contain the AI Toolkit specific parts, including setup scripts, fine-tuning configuration (`olive-config.json`), inference scripts (`chat.py`, `console_chat.py`, `gradio_chat.py`), and datasets.
+* **`Hacketon_ReaAaS-n/neutrosophic quantum FfeD enhancement/`:** Contains Python modules likely implementing the enhanced Neutrosophic Quantum FfeD logic.
+* **`Hacketon_ReaAaS-n/docs/`:** Contains module documentation, including details on the Neutrosophic enhancements and MCP subrepo integrations.
