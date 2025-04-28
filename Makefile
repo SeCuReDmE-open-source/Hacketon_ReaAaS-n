@@ -4,7 +4,7 @@ PIP = pip3
 DOCKER_COMPOSE = docker-compose
 
 # Define targets
-.PHONY: all install build run test clean setup train-model install_mindsdb install_handler dev precommit check build_docker run_docker test_docker neuuro_train neuuro_run neuuro_test submodules run_servers install_neutrosophic build_neutrosophic run_neutrosophic setup_airbyte run_airbyte
+.PHONY: all install build run test clean setup train-model install_mindsdb install_handler dev precommit check build_docker run_docker test_docker neuuro_train neuuro_run neuuro_test submodules run_servers install_neutrosophic build_neutrosophic run_neutrosophic setup_airbyte run_airbyte install_jwt
 
 # Default target
 all: submodules install build run
@@ -28,6 +28,9 @@ install_handler:
 
 install_neutrosophic:
 	$(PIP) install -r neutrosophic-quantum-ffed-enhancement/requirements.txt
+
+install_jwt:
+	$(PIP) install pyjwt
 
 # Development targets
 dev: install precommit

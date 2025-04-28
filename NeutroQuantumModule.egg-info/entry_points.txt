@@ -1,0 +1,2 @@
+[console_scripts]
+neutroquantum = src.modules.NeutrosophicDataProcessing.data_filter_adapter:main

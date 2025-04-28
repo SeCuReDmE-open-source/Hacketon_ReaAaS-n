@@ -1,0 +1,47 @@
+[build-system]
+requires = ["setuptools>=42", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "NeutroQuantumModule"
+version = "0.1.0"
+description = "A module for Neutrosophic Quantum Data Processing"
+authors = [
+    { name="Your Name", email="your.email@example.com" }
+]
+dependencies = [
+    "mindsdb",
+    "torch",
+    "torchquantum",
+    "qiskit",
+    "transformers",
+    "pycaret",
+    "ray[tune]",
+    "pillow",
+    "numpy",
+    "onnxruntime",
+    "clai-helper",
+    "bigdata",
+    "datagrip",
+    "statsforecast",
+    "neuralforecast",
+    "tsfresh",
+    "pyjwt"
+]
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+"src.modules.NeutrosophicDataProcessing" = ["data/*.csv", "data/*.json", "data/*.xml"]
+
+[project.dynamic]
+requires-python = ">=3.6"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent"
+]
+scripts = {
+    "neutroquantum": "src.modules.NeutrosophicDataProcessing.data_filter_adapter:main"
+}

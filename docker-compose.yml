@@ -12,6 +12,7 @@ services:
     environment:
       - PYTHONPATH=/app
       - U2NET_HOME=/app/models
+      - JWT_SECRET=${JWT_SECRET}
     networks:
       - ffed_network
     entrypoint: ["./setup.sh"]
@@ -36,6 +37,7 @@ services:
       MINDSDB_HOST: ${MINDSDB_HOST}
       MINDSDB_USER: ${MINDSDB_USER}
       MINDSDB_PASSWORD: ${MINDSDB_PASSWORD}
+      JWT_SECRET=${JWT_SECRET}
     networks:
       - ffed_network
     entrypoint: ["./setup.sh"]
@@ -87,6 +89,7 @@ services:
       - CUDA_VISIBLE_DEVICES=0  # Enable GPU support
       - NN_BATCH_SIZE=64
       - NN_EPOCHS=100
+      - JWT_SECRET=${JWT_SECRET}
     networks:
       - ffed_network
     depends_on:

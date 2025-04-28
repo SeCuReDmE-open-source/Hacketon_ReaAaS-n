@@ -1,176 +1,88 @@
-# FfeD Project
+# ReaAaS-n (Hackathon Project)
 
-## Setup Instructions
+## Overview
 
-1. Clone the repository:
-```bash
-git clone <repository-url>
-cd FfeD_project
-```
+ReaAaS-n is a multifaceted project developed for a hackathon. It appears to integrate several advanced concepts, including:
 
-2. Install dependencies:
-For Linux/macOS: `./install.sh`
-For Windows: `install.bat`
+* **AI Toolkit:** Functionality for fine-tuning and running inference on AI models (specifically mentioning Phi-3) using techniques like QLoRA. It provides interfaces for interaction via console and web (Gradio).
+* **Data Processing Pipeline:** Utilizes tools like Airbyte for data synchronization, PostgreSQL for database storage, and MindsDB for in-database machine learning and time series forecasting[cite: 1, 3, 5].
+* **FfeD Framework & Neutrosophic/Quantum Enhancements:** Incorporates custom logic potentially involving the FfeD framework, Neutrosophic data processing (handling uncertainty/missing data), and Quantum concepts.
+* **Dockerized Environment:** Leverages Docker and Docker Compose for managing various services like the core server, MindsDB, PostgreSQL, Redis, and potentially Airbyte[cite: 3].
 
-3. Start the services:
-```bash
-docker-compose up
-```
+## Technologies Used
 
-## Access the services:
-- CodeProject.AI Server: [http://localhost:32168](http://localhost:32168)
-- MindsDB: [http://localhost:47334](http://localhost:47334)
+* **Backend:** Python [cite: 1, 4, 5]
+* **AI/ML:** MindsDB, PyTorch, Transformers, Qiskit, ONNXRuntime, bitsandbytes, peft, accelerate, olive-ai
+* **Data:** Airbyte, PostgreSQL, Redis, Pandas, Numpy, tsfresh [cite: 1, 3]
+* **Containerization:** Docker, Docker Compose [cite: 3]
+* **Environment:** Conda
+* **Frontend/Interface:** Gradio, FastAPI
+* **CI/CD:** Azure Pipelines [cite: 1]
+* **Other:** Vercel Analytics
 
-## Development
-- Create new modules in `src/modules/`
-- Add Python dependencies to `requirements.txt`
-- Update Docker configuration as needed
-- Test modules using `explore.html`
+## Setup
 
-## Testing
-- Open `src/modules/NeutrosophicDataProcessing/explore.html` in a browser
-- Upload an image
-- Click "Remove Background"
-- Check results
+*(Note: Setup might vary depending on the component you are focusing on. These are general steps based on the AI Toolkit part)*
 
-## Building for Production
-- Update version in `modulesettings.json`
-- Package the module:
-```bash
-./SDK/Scripts/create_packages.sh
-```
+1.  **Clone the Repository:**
+    ```bash
+    git clone [https://github.com/SeCuReDmE-open-source/Hacketon_ReaAaS-n.git](https://github.com/SeCuReDmE-open-source/Hacketon_ReaAaS-n.git)
+    cd Hacketon_ReaAaS-n
+    ```
+2.  **Set up Conda Environment:** (Referencing the AI Toolkit setup)
+    * Ensure Conda is installed.
+    * Run the setup script (adjust path if needed):
+        ```bash
+        ./ReaAaS-n/setup/first_time_setup.sh
+        ```
+    * Activate the environment (check `conda-environment.yml` for the exact name, e.g., `phi-3-env`):
+        ```bash
+        conda activate <conda_env_name>
+        ```
+3.  **Install Dependencies:** The Conda environment setup should handle this based on `requirements.txt` files. If not, install manually:
+    ```bash
+    pip install -r requirements.txt
+    # Potentially install requirements from ReaAaS-n/setup/requirements.txt as well
+    pip install -r ReaAaS-n/setup/requirements.txt
+    ```
+4.  **Docker Services (Optional):** If using the Dockerized components (like FfeD server, MindsDB, DB):
+    ```bash
+    docker-compose build # Optional, if images need building [cite: 3]
+    docker-compose up -d # Start services in detached mode [cite: 3]
+    ```
 
-## License
-[Your License Here]
+## Basic Usage (AI Toolkit - Fine-tuning & Inference)
 
-This setup provides:
-- Complete development environment
-- Docker containers for isolation
-- MindsDB integration
-- Testing framework
-- Installation scripts
-- Documentation
-- Version control setup
+*(Ensure the Conda environment is activated)*
 
-To start development:
-1. Clone the repository
-2. Run installation script
-3. Start Docker services
-4. Begin developing in `src/modules/`
+1.  **Fine-tuning:**
+    * Navigate to the project root if needed.
+    * Run the Olive fine-tuning script:
+        ```bash
+        python ReaAaS-n/finetuning/invoke_olive.py
+        ```
+    * Checkpoints and the final adapter model should be saved in the `models` directory.
 
-The system will automatically handle:
-- Python virtual environments
-- Model downloads
-- Docker container creation
-- Network setup
-- MindsDB integration
+2.  **Inference (After Fine-tuning):**
+    * Navigate to the inference directory:
+        ```bash
+        cd ReaAaS-n/inference
+        ```
+    * **Console Chat:**
+        ```bash
+        python console_chat.py
+        ```
+    * **Web UI Chat (Gradio):**
+        ```bash
+        python gradio_chat.py
+        ```
+        Then open the provided URL (e.g., `http://127.0.0.1:7860`) in your browser.
 
-## Detailed Instructions for Module Usage and Examples
+## Project Components
 
-### Building the Project
+The repository contains several components:
 
-To build the project, you can use the provided `Makefile`. The `Makefile` includes targets for installing dependencies, building Docker images, running the services, running tests, and cleaning up.
-
-To install dependencies, run:
-```bash
-make install
-```
-
-To build Docker images, run:
-```bash
-make build
-```
-
-To run the services, run:
-```bash
-make run
-```
-
-To run tests, run:
-```bash
-make test
-```
-
-To clean up, run:
-```bash
-make clean
-```
-
-### Example Usage
-
-Here is an example of how to use the NeutrosophicDataProcessing module:
-
-1. Prepare your input data in CSV format and save it as `data/input.csv`.
-2. Run the data filter adapter script:
-```bash
-python src/modules/NeutrosophicDataProcessing/data_filter_adapter.py
-```
-3. The filtered data will be saved as `data/output.csv`.
-
-### Error Handling and Logging
-
-The `data_filter_adapter.py` script includes error handling and logging mechanisms to ensure smooth execution and easy debugging. If any errors occur during the execution, they will be logged for further analysis.
-
-### Continuous Integration (CI)
-
-The repository includes a CI configuration file `.github/workflows/ci.yml` for automated testing and deployment. The CI pipeline will automatically build, test, and deploy the project whenever changes are pushed to the repository.
-
-### Documentation
-
-Detailed documentation for individual modules and their functions can be found in the `docs/modules.md` file. The documentation includes examples and usage instructions for each module.
-
-### Neutrosophic Quantum FfeD Enhancement Setup Instructions
-
-To set up the Neutrosophic Quantum FfeD Enhancement module, follow these steps:
-
-1. Clone the repository:
-```bash
-git clone <repository-url>
-cd FfeD_project
-```
-
-2. Add the current repository as a submodule:
-```bash
-git submodule add <URL-of-the-current-repo> neutrosophic-quantum-ffed-enhancement
-git submodule update --init --recursive
-```
-
-3. Install dependencies for the Neutrosophic Quantum FfeD Enhancement module:
-```bash
-make install_neutrosophic
-```
-
-4. Build the Docker image for the Neutrosophic Quantum FfeD Enhancement module:
-```bash
-make build_neutrosophic
-```
-
-5. Run the Docker container for the Neutrosophic Quantum FfeD Enhancement module:
-```bash
-make run_neutrosophic
-```
-
-6. Access the Neutrosophic Quantum FfeD Enhancement service at [http://localhost:8084](http://localhost:8084)
-
-### Setting Up and Running the Airbyte Pipeline
-
-To set up and run the Airbyte pipeline, follow these steps:
-
-1. Ensure that Airbyte is installed and running. You can use Docker to set up Airbyte by following the instructions on the Airbyte documentation.
-
-2. Configure Airbyte to connect to the PostgreSQL database. This can be done by setting up a new source in Airbyte with the PostgreSQL connector. Provide the necessary connection details such as host, port, database name, username, and password.
-
-3. Set up a destination in Airbyte to connect to the PostgreSQL database. This will allow Airbyte to write data to the database.
-
-4. Create a connection in Airbyte between the source and the destination. This will enable data to flow from the source to the destination.
-
-5. Ensure that the `docker-compose.yml` file includes the necessary services for Airbyte, PostgreSQL, and any other required components. The `database` service in the `docker-compose.yml` file already includes the PostgreSQL configuration.
-
-6. Start the Airbyte data ingestion pipeline by running the `docker-compose up` command. This will start all the services defined in the `docker-compose.yml` file, including Airbyte and PostgreSQL.
-
-7. Run the primary polyglot script to activate the DevOps NeuUuR-o pipeline and connect Airbyte to PostgreSQL and MindsDB:
-```bash
-python src/modules/NeutrosophicDataProcessing/airbyte_pipeline.py
-```
-
-By following these steps, you can configure Airbyte to connect to the pipeline and start ingesting data into the PostgreSQL database. For more detailed instructions, refer to the Airbyte documentation.
+* **`Hacketon_ReaAaS-n/` (Root):** Contains core setup (`docker-compose.yml`, `requirements.txt`), potentially the FfeD server logic, MindsDB integration (`model.py`, `modulesettings.json`), Airbyte pipeline scripts (`airbyte_pipeline.py`), tests, and documentation[cite: 1, 3, 5].
+* **`Hacketon_ReaAaS-n/ReaAaS-n/`:** Seems to contain the AI Toolkit specific parts, including setup scripts, fine-tuning configuration (`olive-config.json`), inference scripts (`chat.py`, `console_chat.py`, `gradio_chat.py`), and datasets.
+* **`Hacketon_ReaAaS-n/neutrosophic quantum FfeD enhancement/`:** Contains Python modules likely implementing the enhanced Neutrosophic Quantum FfeD logic.
+* **`Hacketon_ReaAaS-n/docs/`:** Contains module documentation, including details on the Neutrosophic enhancements and MCP subrepo integrations.
