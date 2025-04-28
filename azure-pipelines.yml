@@ -18,6 +18,7 @@ variables:
   # MINDSDB_HOST: 'your-mindsdb-host'
   # MINDSDB_USER: 'your-mindsdb-user'
   # MINDSDB_PASSWORD: 'your-mindsdb-password'
+  # DISCORD_WEBHOOK_URL: 'your-discord-webhook-url'
 
 stages:
 - stage: Build
@@ -47,6 +48,12 @@ stages:
         testRunTitle: 'Python tests'
       condition: succeededOrFailed()
       displayName: 'Publish test results'
+
+    - script: |
+        curl -X POST -H "Content-Type: application/json" \
+        -d '{"content": "Build and test stage completed"}' \
+        $(DISCORD_WEBHOOK_URL)
+      displayName: 'Send Discord notification for build and test stage'
 
 - stage: Deploy
   dependsOn: Build
@@ -80,3 +87,9 @@ stages:
         MINDSDB_HOST: $(MINDSDB_HOST)
         MINDSDB_USER: $(MINDSDB_USER)
         MINDSDB_PASSWORD: $(MINDSDB_PASSWORD)
+
+    - script: |
+        curl -X POST -H "Content-Type: application/json" \
+        -d '{"content": "Deployment stage completed"}' \
+        $(DISCORD_WEBHOOK_URL)
+      displayName: 'Send Discord notification for deployment stage'

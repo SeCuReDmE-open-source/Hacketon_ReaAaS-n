@@ -10,6 +10,7 @@ from mindsdb import Predictor
 import logging
 import tsfresh
 from tsfresh.feature_extraction import extract_features
+import requests
 
 # Configuration parameters
 config = {
@@ -17,7 +18,8 @@ config = {
     'file_path': 'data/input.csv',
     'output_path': 'data/output.csv',
     'mindsdb_project': 'neutrosophic_data_processing',
-    'mindsdb_model': 'data_filter_model'
+    'mindsdb_model': 'data_filter_model',
+    'discord_webhook_url': os.getenv('DISCORD_WEBHOOK_URL')
 }
 
 # Set up logging
@@ -73,6 +75,19 @@ def determine_search_priority(data):
 def save_data(data, output_path):
     data.to_csv(output_path, index=False)
 
+def send_discord_notification(message):
+    try:
+        webhook_url = config['discord_webhook_url']
+        if webhook_url:
+            data = {"content": message}
+            response = requests.post(webhook_url, json=data)
+            response.raise_for_status()
+            logging.info(f"Discord notification sent successfully: {message}")
+        else:
+            logging.warning("Discord webhook URL not set. Notification not sent.")
+    except Exception as e:
+        logging.error(f"Error sending Discord notification: {e}")
+
 class NeuUuR_o:
     def __init__(self):
         # Initialize components
@@ -127,6 +142,7 @@ class NeuUuR_o:
 def main():
     try:
         logging.info("Starting data processing")
+        send_discord_notification("Starting data filtration process")
 
         # Load data based on the specified format
         if config['data_format'] == 'csv':
@@ -143,6 +159,7 @@ def main():
         # Apply data filtration logic
         filtered_data = filter_data(data)
         logging.info("Data filtration completed")
+        send_discord_notification("Data filtration process completed")
 
         # Apply advanced linear mathematical operations
         acf_values = advanced_linear_operations(filtered_data)
@@ -200,6 +217,7 @@ def main():
 
     except Exception as e:
         logging.error(f"An error occurred: {e}")
+        send_discord_notification(f"An error occurred during the data filtration process: {e}")
 
 # Entry point to run the script
 if __name__ == "__main__":

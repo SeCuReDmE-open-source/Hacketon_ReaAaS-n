@@ -43,3 +43,17 @@ jobs:
 
     - name: Clean up
       run: docker-compose down
+
+    - name: Send Discord notification for push event
+      if: github.event_name == 'push'
+      run: |
+        curl -X POST -H "Content-Type: application/json" \
+        -d '{"content": "Push event detected on main branch"}' \
+        ${{ secrets.DISCORD_WEBHOOK_URL }}
+
+    - name: Send Discord notification for pull request event
+      if: github.event_name == 'pull_request'
+      run: |
+        curl -X POST -H "Content-Type: application/json" \
+        -d '{"content": "Pull request event detected on main branch"}' \
+        ${{ secrets.DISCORD_WEBHOOK_URL }}
