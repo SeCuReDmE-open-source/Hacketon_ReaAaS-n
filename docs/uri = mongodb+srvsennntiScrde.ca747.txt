@@ -1,0 +1,1 @@
+uri = mongodb+srv://sennnti:Scrde.ca7476@minds.d33ve.mongodb.net/?retryWrites=true&w=majority&appName=minds
