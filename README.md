@@ -22,30 +22,39 @@ ReaAaS-n is a multifaceted project developed for a hackathon. It appears to inte
 
 ## Setup
 
-*(Note: Setup might vary depending on the component you are focusing on. These are general steps based on the AI Toolkit part)*
+### Note: Setup might vary depending on the component you are focusing on. These are general steps based on the AI Toolkit part
 
-1.  **Clone the Repository:**
+1. **Clone the Repository:**
+
     ```bash
     git clone [https://github.com/SeCuReDmE-open-source/Hacketon_ReaAaS-n.git](https://github.com/SeCuReDmE-open-source/Hacketon_ReaAaS-n.git)
     cd Hacketon_ReaAaS-n
     ```
-2.  **Set up Conda Environment:** (Referencing the AI Toolkit setup)
+
+2. **Set up Conda Environment:** (Referencing the AI Toolkit setup)
     * Ensure Conda is installed.
     * Run the setup script (adjust path if needed):
+
         ```bash
         ./ReaAaS-n/setup/first_time_setup.sh
         ```
+
     * Activate the environment (check `conda-environment.yml` for the exact name, e.g., `phi-3-env`):
+
         ```bash
         conda activate <conda_env_name>
         ```
-3.  **Install Dependencies:** The Conda environment setup should handle this based on `requirements.txt` files. If not, install manually:
+
+3. **Install Dependencies:** The Conda environment setup should handle this based on `requirements.txt` files. If not, install manually:
+
     ```bash
     pip install -r requirements.txt
     # Potentially install requirements from ReaAaS-n/setup/requirements.txt as well
     pip install -r ReaAaS-n/setup/requirements.txt
     ```
-4.  **Docker Services (Optional):** If using the Dockerized components (like FfeD server, MindsDB, DB):
+
+4. **Docker Services (Optional):** If using the Dockerized components (like FfeD server, MindsDB, DB):
+
     ```bash
     docker-compose build # Optional, if images need building [cite: 3]
     docker-compose up -d # Start services in detached mode [cite: 3]
@@ -53,29 +62,37 @@ ReaAaS-n is a multifaceted project developed for a hackathon. It appears to inte
 
 ## Basic Usage (AI Toolkit - Fine-tuning & Inference)
 
-*(Ensure the Conda environment is activated)*
+### Ensure the Conda Environment is Activated
 
-1.  **Fine-tuning:**
+1. **Fine-tuning:**
     * Navigate to the project root if needed.
     * Run the Olive fine-tuning script:
+
         ```bash
         python ReaAaS-n/finetuning/invoke_olive.py
         ```
+
     * Checkpoints and the final adapter model should be saved in the `models` directory.
 
-2.  **Inference (After Fine-tuning):**
+2. **Inference (After Fine-tuning):**
     * Navigate to the inference directory:
+
         ```bash
         cd ReaAaS-n/inference
         ```
+
     * **Console Chat:**
+
         ```bash
         python console_chat.py
         ```
+
     * **Web UI Chat (Gradio):**
+
         ```bash
         python gradio_chat.py
         ```
+
         Then open the provided URL (e.g., `http://127.0.0.1:7860`) in your browser.
 
 ## Project Components
