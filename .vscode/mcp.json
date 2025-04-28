@@ -1,0 +1,132 @@
+{
+  "$schema": "https://aka.ms/mcp-schema",
+  "servers": {
+    "neuUuR-o": {
+      "url": "http://localhost:32168/api",
+      "type": "rest",
+      "description": "NeuUuR-o Strategic Configuration Engine",
+      "auth": {
+        "type": "bearer"
+      }
+    },
+    "reAAaS-n": {
+      "url": "http://localhost:7701/api/executor",
+      "type": "rest",
+      "description": "ReaAaS-n Execution Engine",
+      "auth": {
+        "type": "bearer"
+      }
+    },
+    "neutroQuantum": {
+      "url": "http://localhost:8080/api/quantum",
+      "type": "rest",
+      "description": "NeutroQuantum Processing Module",
+      "auth": {
+        "type": "bearer"
+      }
+    },
+    "mindsDBStream": {
+      "url": "http://localhost:47334/api/sse",
+      "type": "sse",
+      "description": "MindsDB real-time data streaming for time series forecasting"
+    },
+    "mindsDBGraphQL": {
+      "url": "http://localhost:47334/api/graphql",
+      "type": "graphql",
+      "auth": {
+        "type": "basic",
+        "username": "mindsdb",
+        "password": "password"
+      },
+      "description": "MindsDB GraphQL endpoint for time series model management"
+    },
+    "postgresqlDB": {
+      "url": "postgresql://localhost:5432/neuufed_db",
+      "type": "postgresql",
+      "description": "PostgreSQL database for storing application data"
+    },
+    "redisCache": {
+      "url": "redis://localhost:6379",
+      "type": "redis",
+      "description": "Redis cache for high-speed data access and temporary storage"
+    }
+  },
+  "connections": {
+    "neuUuRoToReaAaSn": {
+      "server": "neuUuR-o",
+      "target": "reAAaS-n",
+      "description": "Primary configuration connection where NeuUuR-o sends strategic configurations to ReaAaS-n",
+      "settings": {
+        "timeout": 30000,
+        "retries": 3,
+        "configurationFormat": "neutrosophic-json",
+        "feedbackEnabled": true
+      }
+    },
+    "quantumProcessor": {
+      "server": "neutroQuantum",
+      "description": "Quantum processing connection for enhanced data analysis",
+      "settings": {
+        "processingMode": "quantum-enhanced",
+        "simulationLevel": "advanced"
+      }
+    },
+    "timeSeriesForecasting": {
+      "server": "mindsDBStream",
+      "description": "Real-time forecasting data stream",
+      "settings": {
+        "eventTypes": ["prediction", "anomaly", "status"],
+        "reconnectAttempts": 5
+      }
+    },
+    "persistentStorage": {
+      "server": "postgresqlDB",
+      "description": "Database connection for storing configuration history and execution results",
+      "settings": {
+        "poolSize": 10,
+        "enableLogging": true
+      }
+    }
+  },
+  "models": {
+    "phi3Mini": {
+      "provider": "azure",
+      "modelId": "phi-3-mini-4k-instruct",
+      "description": "Phi-3 Mini 4K Instruct model for inferencing"
+    },
+    "neutrosophicQuantumModel": {
+      "provider": "custom",
+      "modelId": "neutrosophic-quantum-ffed-v1",
+      "description": "Custom quantum-enhanced neutrosophic model for uncertainty handling",
+      "path": "../models/neutrosophic-quantum-ffed-v1"
+    },
+    "timeSeriesPredictor": {
+      "provider": "mindsdb",
+      "modelId": "neuucro_engine",
+      "description": "MindsDB time series forecasting model",
+      "connection": "timeSeriesForecasting"
+    }
+  },
+  "settings": {
+    "logging": {
+      "level": "info",
+      "enableDetailedErrors": true,
+      "logPaths": {
+        "neutroQuantum": "./logs/neutroquantum.log",
+        "reaasnConfig": "./logs/reaasn-config.log",
+        "neuuurOperation": "./logs/neuuur-operation.log"
+      }
+    },
+    "caching": {
+      "enabled": true,
+      "ttl": 3600,
+      "connection": "redisCache"
+    },
+    "neutrosophicSettings": {
+      "truthThreshold": 0.7,
+      "indeterminacyThreshold": 0.4,
+      "falsityThreshold": 0.3,
+      "quantumSimulationSteps": 1000
+    }
+  }
+}
