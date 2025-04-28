@@ -9,7 +9,6 @@ ray[tune]
 pillow
 numpy
 onnxruntime
-securidme-engine
 clai-helper
 bigdata
 datagrip

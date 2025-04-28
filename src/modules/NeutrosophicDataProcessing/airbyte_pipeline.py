@@ -25,8 +25,8 @@ config = {
     'file_path': 'data/input.csv',
     'output_path': 'data/output.csv',
     'mindsdb_project': 'neutrosophic_data_processing',
-    'mindsdb_model': 'data_filter_model'
-
+    'mindsdb_model': 'data_filter_model',
+    'discord_webhook_url': os.getenv('DISCORD_WEBHOOK_URL')
 }
 
 def generate_jwt_token(secret, payload):
@@ -45,8 +45,10 @@ def trigger_devops_pipeline():
         # response = requests.post('https://dev.azure.com/your-org/your-project/_apis/build/builds?api-version=6.0', json=payload, headers=headers)
         # response.raise_for_status()
         logging.info("DevOps pipeline triggered successfully")
+        send_discord_notification("DevOps pipeline triggered successfully")
     except Exception as e:
         logging.error(f"Error triggering DevOps pipeline: {e}")
+        send_discord_notification(f"Error triggering DevOps pipeline: {e}")
         raise
 
 def configure_airbyte():
@@ -117,14 +119,17 @@ def configure_airbyte():
 def start_airbyte_sync():
     try:
         logging.info("Starting Airbyte data ingestion pipeline")
+        send_discord_notification("Starting Airbyte data ingestion pipeline")
         sync_payload = {
             "connectionId": config['airbyte_connection_id']
         }
         sync_response = requests.post(f"{config['airbyte_api_url']}/connections/sync", json=sync_payload)
         sync_response.raise_for_status()
         logging.info("Airbyte data ingestion pipeline started successfully")
+        send_discord_notification("Airbyte data ingestion pipeline started successfully")
     except Exception as e:
         logging.error(f"Error starting Airbyte data ingestion pipeline: {e}")
+        send_discord_notification(f"Error starting Airbyte data ingestion pipeline: {e}")
         raise
 
 def connect_mindsdb():
@@ -174,6 +179,19 @@ def determine_search_priority(data):
 
 def save_data(data, output_path):
     data.to_csv(output_path, index=False)
+
+def send_discord_notification(message):
+    try:
+        webhook_url = config['discord_webhook_url']
+        if webhook_url:
+            data = {"content": message}
+            response = requests.post(webhook_url, json=data)
+            response.raise_for_status()
+            logging.info(f"Discord notification sent successfully: {message}")
+        else:
+            logging.warning("Discord webhook URL not set. Notification not sent.")
+    except Exception as e:
+        logging.error(f"Error sending Discord notification: {e}")
 
 class NeuUuR_o:
     def __init__(self):
@@ -284,6 +302,7 @@ def main():
         logging.info("Primary polyglot script completed successfully")
     except Exception as e:
         logging.error(f"An error occurred in the primary polyglot script: {e}")
+        send_discord_notification(f"An error occurred in the primary polyglot script: {e}")
 
 if __name__ == "__main__":
     main()
